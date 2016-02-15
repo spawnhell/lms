@@ -53,6 +53,17 @@ $TABLENAME_NOINDEX = array(
 			'sessions');
 
 
+/**
+ * Definicje na potrzeby obsługi
+ * VLAN
+ * 
+ * @author Adam Bugajewski
+ * 
+ */
+
+define('VLANTYPE_TAG','1');
+define('VLANTYPE_UNTAG','2');
+
 // na potrzeby menu
 define('MODULES_ADMIN',20);
 define('MODULES_CUSTOMERS',40);
