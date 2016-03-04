@@ -1,0 +1,50 @@
+{include file="header.html"}
+{$xajax}
+{title value=$layout.pagetitle link="<a href=\"javascript:void(0);\" onclick=\"xajax_vlanShow();\">{trans('Add Vlan')} <img src=\"img/add.gif\" alt=\"\"> <a/>"}
+
+    <div id="vlan_form" style="display: none;">
+        <form name="vlan" id="vlan" method="post">
+            <table width='100%'>
+                <tr class="dark">
+                    <td width="10%" style="font-weight: bold;" colspan="2">{trans('New VLAN')}</td>
+                </tr>
+                <tr class="light">
+                    <td width="10%">Identyfikator VLAN</td>
+                    <td><input type="text" name="vlan_id" style="width:250px" id="vlan_id" value="{$vlan_id}" placeholder="{trans('Enter VLAN ID')}"></td>
+                </tr>
+                <tr class="dark">
+                    <td width="100%" align="right" colspan="2">
+                    <a href="javascript:void(0);" onclick="xajax_vlanSave(xajax.getFormValues('vlan'));">{trans('Save')} <img src="img/add.gif" alt=""></a>
+                    <a href="javascript:void(0);" onclick="xajax_vlanCancel();">{trans('Cancel')} <img src="img/cancel.gif" alt=""></a>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div></br>
+    
+<table width="100%" class="table">
+        <tr class="dark boxtop">
+            <td width="2%">#</td>
+            <td>VLAN</td>
+        </tr>
+        
+        {if $vlanList}
+            {cycle values="lucid,light" print=false}
+            {section name='vlanList' loop=$vlanList}
+                <tr class="{cycle}">
+                    <td>{$vlanList[vlanList].id}</td>
+                    <td>{$vlanList[vlanList].value}</td>
+                </tr>
+            {/section}
+        {else}
+        <tr>
+		<td colspan="2" align="center" class="fall">
+			<p>&nbsp;</p>
+			<p><b>{trans("There are no vlans in database")}.</b></p>
+			<p>&nbsp;</p>
+		</td>
+	</tr>
+        {/if}
+</table>
+
+{include file="footer.html"}

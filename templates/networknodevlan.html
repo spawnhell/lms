@@ -1,0 +1,96 @@
+{* Wyświetlanie błędów *}
+
+
+{literal}
+    <script type="text/javascript" language="JavaScript">
+        // Funkcja służy do dodania obsługi vlan w węźle
+	function add_vlan()
+	{
+	    var vid = document.getElementById('addvlan').value;
+            var vname = document.getElementById('vlan_name').value;
+            var vdesc = document.getElementById('vlan_description').value;
+	    loadAjax('id_data','?m=networknodeinfo&tuck=vlan&idn={/literal}{$idn}{literal}&addvlan='+vid+'&vname='+vname+'&vdesc='+vdesc+'');
+	}
+        
+        //Funkcja usuwa konkretny vlan z węzła.
+	function del_vlan(vid)
+	{
+	    if (confirm('Potwierdź usunięcie VLAN '+vid+' z węzła')) {
+		loadAjax('id_data','?m=networknodeinfo&tuck=vlan&idn={/literal}{$idn}{literal}&delvlan='+vid+'');
+	    }
+	}
+    
+    -->
+    </script>
+{/literal}
+
+<table width="100%">
+    <tr class="dark">
+        <td width="5%" style="font-weight:bold;">Vlan ID</td>
+        <td width="1%">:</td>
+        <td width="94%">
+            <select name="addvlan" id="addvlan" style="min-width:200px;">
+                <option value="0">{trans("... select vlan ...")}</option>
+		{foreach from=$vlans item=item}
+                    <option value="{$item.id}">{$item.value} ({$item.id})</option>
+		{/foreach}
+            </select>
+        </td>
+    </tr>
+    <tr>
+        <td style="font-weight:bold;">Name</td>
+        <td>:</td>
+        <td><input id="vlan_name" type="text" style="min-width:200px;"/></td>
+    </tr>
+    <tr class="dark">
+        <td style="font-weight:bold;">Description</td>
+        <td>:</td>
+        <td ><textarea id="vlan_description" type="text" style="min-width:200px;min-height:70px;"/></td>
+    </tr>
+    <tr align="right" nowrap class="pad" width="5%">
+        <td colspan="3"><a href="javascript:void(0);" onclick="add_vlan();"><b>Dodaj VLAN do węzła</b> <img src="img/add.gif"></a></td>
+    </tr>
+</table>
+
+<b>
+                
+            </b>
+
+{if $nodeVlans}
+<br>
+<table width="100%" cellpadding="3">
+
+    <tr class="dark nav-header" style="font-weight: bold;">
+        <td width="1%" nowrap align="center" class="fleftu pad">VLAN ID</td>
+	<td width="97%" align="left" class="pad fbt tleft">Opis</td>
+        <td width="1%" nowrap align="right" class="frightu pad5 tleft">Interfaces</td>
+	<td width="1%" nowrap align="right" class="frightu pad5 tleft">Op.</td>
+    </tr>
+    
+    {cycle values="lucid,light" print=false}
+    {section name="vlans" loop=$nodeVlans}
+	<tr class="{cycle} lista">
+	    <td width="1%" nowrap align="center" class="fleftu pad">{$nodeVlans[vlans].value}</td>
+            <td width="98%" align="left" class="pad fbt tleft">
+                {if $nodeVlans[vlans].name}
+                    <b>{$nodeVlans[vlans].name}</b>
+                {else}
+                    <b>VLAN has no name.</b>
+                {/if}
+                {if $nodeVlans[vlans].description}
+                    <br><i>{$nodeVlans[vlans].description}</i>
+                {else}
+                    <br><i>Lack of description.</i>
+                {/if}
+            </td>
+            <td style="text-align: center;">
+                0
+            </td>
+	    <td width="1%" nowrap align="right" class="frightu pad5 tleft">
+		<img src="img/delete.gif" alt="[ usuń ]" title="[ usuń vlan z węzła ]" style="cursor:pointer;" onclick="del_vlan('{$nodeVlans[vlans].value}');">
+	    </td>
+	</tr>
+    {/section}
+</table>
+
+{/if}
