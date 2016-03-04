@@ -937,6 +937,12 @@ $menu = array(
 					'tip' => trans('Lista projektów inwestycyjnych'),
 					'prio' => 70,
 				),
+                                array(
+					'name' => trans('VLAN'),
+					'link' => '?m=vlanlist',
+					'tip' => trans('Definicja wykorzystywanych VLAN ID w sieci.'),
+					'prio' => 80,
+				),
 //				array(
 //					'name' => 'Podmioty obce',
 //					'link' => '?m=foreignentity',

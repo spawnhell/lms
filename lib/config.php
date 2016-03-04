@@ -517,6 +517,7 @@ $DEFAULTFORM = array(
 		'replace'	=> array(0,'wymiana urządzenia na inne, pole select "Wynień na:"'),
 		'ibgp'		=> array(0,'pole iBGP AS - identyfikator AS routera'),
 		'ebgp'		=> array(0,'pole eBGP AS - identyfikator AS routera'),
+                'vlan_id'       => array(0,'pole VLAN - Identyfikator ramki ethernetowej'),
     ),
     'quicksearch' => array(
 		'qscustomer'	=> array(1,'szybkie wyszukiwanie klienta'),

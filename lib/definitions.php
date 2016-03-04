@@ -63,6 +63,8 @@ $TABLENAME_NOINDEX = array(
 
 define('VLANTYPE_TAG','1');
 define('VLANTYPE_UNTAG','2');
+define('VLAN_MAX', 4096);
+define('VLAN_MIN', 0);
 
 // na potrzeby menu
 define('MODULES_ADMIN',20);

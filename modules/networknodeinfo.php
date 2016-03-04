@@ -43,6 +43,7 @@ $tucklist[] = array('tuck' => 'interface', 'name' => 'Interfejsy sieciowe', 'lin
 $tucklist[] = array('tuck' => 'costs', 'name' => trans('Koszty'), 'link' => '?m=networknodeinfo&tuck=costs&idn='.$idn, 'tip' => trans('Koszty związane z utrzymaniem samego węzła'));
 $tucklist[] = array('tuck' => 'annex', 'name' => 'Załączniki', 'link' => '?m=networknodeinfo&tuck=annex&idn='.$idn, 'tip' => 'Załączone dokumenty, pliki itp. do węzła');
 $tucklist[] = array('tuck' => 'group', 'name' => 'Grupy', 'link' => '?m=networknodeinfo&tuck=group&idn='.$idn, 'tip' => 'Grupy do jakich należy węzeł');
+$tucklist[] = array('tuck' => 'vlan', 'name' => 'VLAN', 'link' => '?m=networknodeinfo&tuck=vlan&idn='.$idn, 'tip' => 'Lista obsługivanych identyfikatorów VLAN dla danego węzła');
 
 $SMARTY->assign('tucklist',$tucklist);
 
@@ -375,7 +376,73 @@ elseif ($tuck == 'group') {
     $SMARTY->display('networknodegroup.html');
 
 
-die;
+    die;
+// Zakładka VLAN
+} elseif ( $tuck == 'vlan') {
+    
+    $SESSION->nowsave('net_node_tuck',$tuck);
+    $layout['popup'] = $layout['ajax'] = true;
+    
+    /**
+     * Warunek dodania VLAN do tablicy.
+     * Konieczne wsytąpienie dwóch parametrów w zapytaniu.
+     * @var int networknode_id - identyfikator węzła
+     * @var int vlan_id - identyfikator vlan
+     * Pozostałe dwa parametry opcjonalne.
+     * @var string vdesc - opis do czego służy vlan w węźle
+     * @var string vname - Ogólna nazwa vlna'u w węźle
+     * 
+     * @author Adam Bugajewski
+     */
+    if (isset($_GET['addvlan']) && !empty($_GET['addvlan'])) {
+        $DB->Execute('INSERT INTO vlan_to_networknode ( networknode_id, vlan_id, description, name ) VALUES (?,?,?,?);',array($idn,intval($_GET['addvlan']),$_GET['vdesc'],$_GET['vname']));
+    }
+    
+    /**
+     * Warunek usunięcia vlan z węzła.
+     * Konieczne wystąpienie obu parametrów.
+     * @var int vlan_id - identyfikator vlan
+     * @var int networknode_id - identyfikator węzła
+     * 
+     * @author Adam Bugajewski
+     */
+    if (isset($_GET['delvlan']) && !empty($_GET['delvlan'])) {
+        
+        $vlan_id = $DB->GetRow('SELECT id FROM vlan WHERE value = ?',array(intval($_GET['delvlan'])));
+	$DB->Execute('DELETE FROM vlan_to_networknode WHERE networknode_id = ? AND vlan_id = ?;',array($idn,intval($vlan_id['id'])));
+  
+    }
+    
+    /**
+     * Pobranie listy VLAN występujących w sieci
+     * z pominięciem VLAN przypisanych już do węzła.
+     */
+    $vlans = $DB->getAll('SELECT id,value
+                            FROM vlan v
+                            WHERE id NOT IN
+                            (   SELECT vlan_id FROM vlan_to_networknode vtn
+                                LEFT JOIN vlan ON vlan.id = vtn.vlan_id
+                                WHERE vtn.networknode_id = ? )
+                                ORDER BY value;'
+                            ,array($idn));
+    
+    /**
+     * Pobranie listy vlanów przypisanych do węzła.
+     */
+    $nodeVlans = $DB->getALL('SELECT v.value, vtn.description, vtn.name 
+                              FROM `vlan_to_networknode` AS vtn
+                              LEFT JOIN `vlan` AS v ON v.id = vtn.vlan_id
+                              WHERE networknode_id = ?
+                              ORDER BY v.value', array($idn));
+    
+    /**
+     * Przekazanie parametrów i danych 
+     * do silnika szabonów.
+     */
+    $SMARTY->assign('nodeVlans',$nodeVlans);
+    $SMARTY->assign('vlans',$vlans);
+    $SMARTY->display('networknodevlan.html');
+    die;
 }
 
 $tuck = (isset($_GET['tuck']) ? $_GET['tuck'] : $SESSION->get('net_node_tuck','base'));

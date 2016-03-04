@@ -2763,6 +2763,7 @@ $_LANG['EAP Client'] = 'Klient EAP';
 $_LANG['Enable/disable PPPoE Server Client'] = 'Włącza/Wyłącza komputer jako klient PPPoE';
 $_LANG['Enable/disable DHCP Server Client'] = 'Włącza/Wyłącza komputer jako klient DHCP';
 $_LANG['Enable/disable EAP Server Client'] = 'Włącza/Wyłącza komputer jako klient EAP';
+$_LANG['There are no vlans in database'] = " Brak wpisów VLAN w bazie danych";
 
 
 ?>

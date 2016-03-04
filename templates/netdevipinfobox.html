@@ -72,6 +72,14 @@
 			<td width="1%" nowrap class="pad"><b>:</b></td>
 			<td width="97%"><a href="javascript:ping_popup('{$nodeipdata.ip}')">{$nodeipdata.ip}</a></td>
 		    </tr>
+                    {if get_form('netdev.vlan_id')}
+                    <tr>
+                        <td width="1%"><img src="img/vlan.png" alt="{trans("VLAN")}"></td>
+			<td width="1%" nowrap class="pad"><b>VLAN</b></td>
+			<td width="1%" nowrap class="pad"><b>:</b></td>
+			<td width="97%">{if $nodeipdata.vlan_id}{$nodeipdata.vlan_id}{else}{trans("native")}{/if}</a></td>
+                    </td>
+                    {/if}
 		    <tr class="light">
 			<td width="1%"><img src="img/network.gif" alt=""></td>
 			<td width="1%" nowrap class="pad"><b>Sieć</b></td>

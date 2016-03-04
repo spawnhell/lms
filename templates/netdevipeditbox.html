@@ -68,7 +68,7 @@
 		    <td width="1%" nowrap class="pad"><b>IP</b></td>
 		    <td width="1%" nowrap class="pad"><b>:</b></td>
 		    <td width="97%">
-			<input type="text" name="ipadd[ipaddr_pub]" value="{if $nodeipdata.ip_pub!="0.0.0.0"}{$nodeipdata.ip_pub}{/if}" {tip text="Enter IP address" trigger="ipaddr_pub"}>
+			<input type="text" name="ipadd[ipaddr_pub]" value="{if $nodeipdata.ip_pub!="0.0.0.0"}{$nodebipdata.ip_pub}{/if}" {tip text="Enter IP address" trigger="ipaddr_pub"}>
 			<a href="javascript: void(0);" onclick="return ipchoosewinpub(document.editipaddr['ipadd[ipaddr_pub]'],{$nodeipdata.netid_pub});" {tip text="Click to select IP from the list"}>&raquo;&raquo;&raquo;</a>
 		    </td>
 		</tr>
@@ -89,6 +89,15 @@
 	    </td>
 	</tr>
 	{/if}
+        <tr class="light">
+            <td width="1%"><img src="img/vlan.png" alt=""></td>
+            <td width="1%"><b>{trans("VLAN:")}</b></td>
+            <td width="98%" nowrap>
+                    <input id="vlan" type="number" name="netdev[vlan]" value="{if $nodeipdata.vlan_id}{$nodeipdata.vlan_id}{/if}">
+                    <label for="vlan">T:</label>
+                    <input type="checkbox" name="ipadd[VLAN_TAGGED]" value="1" id="vlan_type" {tip text="Type of VLAN" trigger="vlan_tag"}{if $nodeipdata.vlan_type == 1} checked{/if}>
+            </td>
+        </tr>
 	<tr class="light">
 		<td width="1%">
 			<img src="img/mac.gif" alt="">
